@@ -47,9 +47,50 @@ def enFNC(A):
 # Input: A (cadena) en notacion inorder
 # Output: B (cadena), Tseitin
 def Tseitin(A, letrasProposicionalesA):
-    letrasProposicionalesB = [chr(x) for x in range(256, 300)]
-    assert(not bool(set(letrasProposicionalesA) & set(letrasProposicionalesB))), u"¡Hay letras proposicionales en común!"
-
+    	letrasProposicionalesB = [chr(x) for x in range(256, 300)]
+    	assert(not bool(set(letrasProposicionalesA) & set(letrasProposicionalesB))), u"¡Hay letras proposicionales en común!"
+    	L = [] #Inicializamos lista de conjuciones 
+    	PILA = [] #Inicializamos pila
+    	I = -1 #Inicializamos conutador de variables nuevas 
+    	s = A[0] #Inicializamos Simbolo de Trabajo 
+    	while len(A) > 0:
+    		if (s in LetrasProposicionalesA or letrasProposicionalesA) and PILA[-1] = '-':
+			I += 1
+			ATOMO = LetrasProposicionalesB[I]
+			PILA = PILA[:-1]
+			PILA.append(ATOMO)
+			L.append(ATOMO + '<->' + '-' + S)
+			A = A[1:]
+			S = A[0]
+			if len(A) > 0:
+				s = A[0]
+		elif s = ')':
+			W = PILA[-1]
+			O = PILA[-2]
+			V = PILA[-3]
+			PILA = PILA[:len(PILA)-4]
+			I += 1	
+			ATOMO  = LetrasProposicionalesB[I]
+			L.append(ATOMO + '<->' + '('+ V + 'O' + W + ')')
+			s = ATOMO
+		else:
+			PILA.append(s)
+			A = A[1:]
+			if len(A) > 0:
+				S = A[0]	
+    	
+	B = ''
+	if I < 0:
+		ATOMO = PILA[-1]
+	else:
+		ATOMO = LetrasProposicionalesB[I]
+	
+	for X in L:
+		Y = enFNC(X)
+		B += 'Y'+ Y
+	B = ATOMO + B 
+	return B 
+		
     # CODIGO AQUI
 
     return "OK"
@@ -91,3 +132,5 @@ def formaClausal(A):
 # Descomente el siguiente código y corra el presente archivo
 # f = "pO-qOrY-sOt"
 # print(formaClausal(f)) # Debe obtener [['p', '-q', 'r'], ['-s', 't']]
+
+
