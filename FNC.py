@@ -47,76 +47,93 @@ def enFNC(A):
 # Input: A (cadena) en notacion inorder
 # Output: B (cadena), Tseitin
 def Tseitin(A, letrasProposicionalesA):
-    	letrasProposicionalesB = [chr(x) for x in range(256, 300)]
-    	assert(not bool(set(letrasProposicionalesA) & set(letrasProposicionalesB))), u"¡Hay letras proposicionales en común!"
-    	L = [] #Inicializamos lista de conjuciones 
-    	PILA = [] #Inicializamos pila
-    	I = -1 #Inicializamos conutador de variables nuevas 
-    	s = A[0] #Inicializamos Simbolo de Trabajo 
-    	while len(A) > 0:
-    		if (s in LetrasProposicionalesA or letrasProposicionalesA) and PILA[-1] = '-':
-			I += 1
-			ATOMO = LetrasProposicionalesB[I]
-			PILA = PILA[:-1]
-			PILA.append(ATOMO)
-			L.append(ATOMO + '=' + '-' + S)
-			A = A[1:]
-			S = A[0]
-			if len(A) > 0:
-				s = A[0]
-		elif s = ')':
-			W = PILA[-1]
-			O = PILA[-2]
-			V = PILA[-3]
-			PILA = PILA[:len(PILA)-4]
-			I += 1	
-			ATOMO  = LetrasProposicionalesB[I]
-			L.append(ATOMO + '=' + '('+ V + 'O' + W + ')')
-			s = ATOMO
-		else:
-			PILA.append(s)
-			A = A[1:]
-			if len(A) > 0:
-				S = A[0]	
-    	
-	B = ''
-	if I < 0:
-		ATOMO = PILA[-1]
-	else:
-		ATOMO = LetrasProposicionalesB[I]
-	
-	for X in L:
-		Y = enFNC(X)
-		B += 'Y'+ Y
-	B = ATOMO + B 
-	return B 
-		
-    # CODIGO AQUI
-
-    return "OK"
+    letrasProposicionalesB = [chr(x) for x in range(256, 300)]
+    assert(not bool(set(letrasProposicionalesA) & set(letrasProposicionalesB))), u"¡Hay letras proposicionales en común!"
+    L = []
+    pila = []
+    I = -1
+    s = A[0]
+    while len(A) > 0:
+        if(s in letrasProposicionalesA or letrasProposicionalesB) and pila[-1] == '-':
+            I+=1
+            atomo = letrasProposicionalesB[I]
+            pila = pila[:-1]
+            pila.append(atomo)
+            L.append(atomo + '<=>' + '-' + s)
+            A = A[1:]
+            s = A[0]
+            if len(A)>0:
+                s = A[0]
+        elif s == ')':
+            w = pila[-1]
+            o = pila[-2]
+            v = pila[-3]
+            pila = pila[:len(pila)-4]
+            I += 1
+            atomo = letrasProposicionalesB[I]
+            L.append(atomo + '<=>' + '('+v+o+w+')')
+            s = atomo
+        else:
+            pila.append(s)
+            A = A[1:]
+            if len(A)>0:
+                s = A[0]
+    B = ''
+    if I < 0:
+        atomo = pila[-1]
+    else:
+        atomo = letrasProposicionalesB[I]
+    for x in l:
+        y = enFNC(x)
+        B += 'Y'+y
+    B = atomo +B
+    return B1
 
 # Subrutina Clausula para obtener lista de literales
 # Input: C (cadena) una clausula
 # Output: L (lista), lista de literales
 def Clausula(C):
 
-    # CODIGO AQUI
+    l = []
+    while (len(C)>0):
+        s = C[0]
+        if (s=='O'):
+            C = C[1:]
+        elif (s == '-'):
+            literal = s + C[1]
+            l.append(literal)
+            C = C[2:]
+        else:
+            l.append(s)
+            C = C[1:]
+    return l
 
-    return "OK"
+
 
 # Algoritmo para obtencion de forma clausal
 # Input: A (cadena) en notacion inorder en FNC
 # Output: L (lista), lista de listas de literales
 def formaClausal(A):
+    l = []
+    i = 0
+    while(len(A)>0):
+        if (i >= len(A)):
+            l.append(Clausula(A))
+            A = []
+        else:
+            if ( A[i]== 'Y'):
+                l.append(Clausula(A[:i]))
+                A = A[i+1:]
+                i = 0
+            else:
+                i +=1
 
-    # CODIGO AQUI
-
-    return "OK"
+    return l
 
 # Test enFNC()
-# Descomente el siguiente código y corra el presente archivo
-# formula = "p=(qYr)"
-# print(enFNC(formula)) # Debe obtener qO-pYrO-pY-qO-rOp
+#Descomente el siguiente código y corra el presente archivo
+formula = "p=(qYr)"
+print(enFNC(formula)) # Debe obtener qO-pYrO-pY-qO-rOp
 
 # Test Tseitin()
 # Descomente el siguiente código y corra el presente archivo
@@ -125,12 +142,10 @@ def formaClausal(A):
 
 # Test Clausula()
 # Descomente el siguiente código y corra el presente archivo
-# c = "pO-qOr"
-# print(Clausula(c)) # Debe obtener ['p', '-q', 'r']
+c = "pO-qOr"
+print(Clausula(c)) # Debe obtener ['p', '-q', 'r']
 
 # Test formaClausal()
 # Descomente el siguiente código y corra el presente archivo
-# f = "pO-qOrY-sOt"
-# print(formaClausal(f)) # Debe obtener [['p', '-q', 'r'], ['-s', 't']]
-
-
+f = "pO-qOrY-sOt"
+print(formaClausal(f)) # Debe obtener [['p', '-q', 'r'], ['-s', 't']]
